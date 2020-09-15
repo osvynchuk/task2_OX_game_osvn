@@ -83,7 +83,6 @@ void pc_smart_player::do_step () {
         }
     }
 
-    //std::cout << "+++++" << max_row << ", " << max_column << ", " << fw_diag_cnt<< ", " << bw_diag_cnt << std::endl;
     //std::cout << "+++++" << max_row_cnt << ", " << max_col_cnt << ", " << fw_diag_cnt<< ", " << bw_diag_cnt << std::endl;
 
     bool success = false;

@@ -3,11 +3,21 @@
 #include "player_base.h"
 #include <random>
 
+//
+// CPP course, task 2 - OX game
+// (c) Oleksiy Svynchuk
+//
+
 namespace ox_game {
 
-class pc_dumb_player : public player_base {
+//
+// Trivial player encapsulates simple algorithm
+// based on random generatoio of a coordinate for the naxt step
+//
+
+class pc_trivial_player : public player_base {
 public:
-    pc_dumb_player();
+    pc_trivial_player();
     void do_step () override;
 
 private:

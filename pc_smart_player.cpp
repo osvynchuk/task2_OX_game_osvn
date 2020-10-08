@@ -3,6 +3,11 @@
 #include "pc_smart_player.h"
 #include <iostream>
 
+//
+// CPP course, task 2 - OX game
+// (c) Oleksiy Svynchuk
+//
+
 namespace ox_game {
 
 // The logic below tires to prevent the opponent from winning
@@ -12,16 +17,19 @@ void pc_smart_player::do_step () {
     for (const auto& rows: m_opponent_p->get_coords()) {
         for (const auto& entry: rows) opp_not_empty = opp_not_empty || entry;
     }
+
+    // Do the first step
     if (!opp_not_empty) {
-        set_coord(FieldRowSize/2, FieldRowSize/2);
+        pc_trivial_player::do_step();
         return;
     }
 
-    std::vector<int> cnt_by_rows;
+    std::vector<int> cnt_by_rows; // <- count of entries taken by opponent in a row (aggregated for each row)
     for (int y=FieldRowSize-1; y>=0; --y) {
         int cnt = 0;
         bool skip = false;
-        for (auto& ownentry : m_coords[y]) if(ownentry) {skip = true; break;}
+        for (auto& ownentry : m_coords[y]) if(ownentry) {skip = true; break;} // check if we've taken any entry in this row
+
         if (!skip) {
             for (auto& entry : m_opponent_p->get_coords()[y]) {
                 if(entry) cnt++;
@@ -29,6 +37,8 @@ void pc_smart_player::do_step () {
         }
         cnt_by_rows.push_back(cnt);
     }
+
+    // find row with maximal count of entries taken by opponent
     int max_row = 0;
     int max_row_cnt = -1;
     for (int i=0; i<cnt_by_rows.size(); ++i) {
@@ -38,11 +48,12 @@ void pc_smart_player::do_step () {
         }
     }
 
-    std::vector<int> cnt_by_columns;
+    std::vector<int> cnt_by_columns; // <- count of entries taken by opponent in a column (aggregated for each column)
     for (int i=0; i<FieldRowSize; ++i) {
         int cnt = 0;
         bool skip = false;
         for (int y=FieldRowSize-1; y>=0; --y) if (m_coords[y][i]) {skip=true; break;}
+
         if (!skip) {
             for (int y=FieldRowSize-1; y>=0; --y) {
                 if (m_opponent_p->get_coords()[y][i]) cnt++;
@@ -50,6 +61,8 @@ void pc_smart_player::do_step () {
         }
         cnt_by_columns.push_back(cnt);
     }
+
+     // find column with maximal count of entries taken by opponent
     int max_column = 0;
     int max_col_cnt = -1;
     for (int i=0; i<cnt_by_columns.size(); ++i) {
@@ -59,6 +72,7 @@ void pc_smart_player::do_step () {
         }
     }
 
+    // count of entries taken by opponent in the forward diagonal
     int fw_diag_cnt = -1;
     bool skip = false;
     for (int i=0; i<FieldRowSize; ++i)
@@ -71,6 +85,7 @@ void pc_smart_player::do_step () {
         }
     }
 
+    // count of entries taken by opponent in the backward diagonal
     int bw_diag_cnt = -1;
     skip= false;
     for (int i=0; i<FieldRowSize; ++i)
@@ -84,6 +99,8 @@ void pc_smart_player::do_step () {
     }
 
     //std::cout << "+++++" << max_row_cnt << ", " << max_col_cnt << ", " << fw_diag_cnt<< ", " << bw_diag_cnt << std::endl;
+
+    // Find the right coordinate for our next step, in order to block the opponent
 
     bool success = false;
     if (max_row_cnt >= max_col_cnt && max_row_cnt >= fw_diag_cnt && max_row_cnt >= bw_diag_cnt) {
@@ -104,7 +121,7 @@ void pc_smart_player::do_step () {
         }
     }
     else {
-        std::cout << "WARN: unable to find right coord for next step!" << std::endl;
+        std::cout << "WARN: unable to find right coord for the next step!" << std::endl;
     }
 
     if (!success) {

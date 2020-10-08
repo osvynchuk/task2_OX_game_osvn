@@ -2,6 +2,12 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "player_base.h"
 
+
+//
+// CPP course, task 2 - OX game
+// (c) Oleksiy Svynchuk
+//
+
 namespace ox_game {
 
 player_base::player_base() {
@@ -36,6 +42,7 @@ bool player_base::is_winner() const {
         }
         return false;
     };
+
     auto scan_vertically = [] (const std::array<std::array<bool, FieldRowSize>, FieldRowSize>& coords) {
         for (std::size_t j =0; j<FieldRowSize; ++j) {
             bool res = true;
@@ -46,6 +53,7 @@ bool player_base::is_winner() const {
         }
         return false;
     };
+
     auto scan_by_diagonal = [] (const std::array<std::array<bool, FieldRowSize>, FieldRowSize>& coords) {
         bool res = true;
         for (std::size_t j =0; j<FieldRowSize; ++j) {

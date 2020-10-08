@@ -3,6 +3,11 @@
 #include "human_player.h"
 #include <iostream>
 
+//
+// CPP course, task 2 - OX game
+// (c) Oleksiy Svynchuk
+//
+
 namespace ox_game {
 
 void human_player::do_step () {

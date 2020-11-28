@@ -1,7 +1,6 @@
 #ifndef IPLAYER_H
 #define IPLAYER_H
 #include <array>
-#include "defines.h"
 #include <memory>
 
 //
@@ -17,22 +16,17 @@ namespace ox_game {
 // which encapsulates specific behavior
 // of any concrete player in our hierarchy
 
-class player_base {
-    friend class GameContext;
-public:
-    player_base();
-    virtual ~player_base() = default;
-    virtual void do_step () = 0;
-    void set_opponent(const std::shared_ptr<player_base> opponent_p);
-    bool is_winner() const;
+class PlayArea;
 
-    const std::array<std::array<bool, FieldRowSize>, FieldRowSize>& get_coords();
+class player_base {
+public:
+    player_base(char cell_type);
+    virtual ~player_base() = default;
+    virtual void do_step (PlayArea& area) = 0;
+    char get_cell_type() { return m_own_cell_type; }
+
 protected:
-    bool set_coord(int x, int y);
-    bool can_set_coord(int x, int y) const;
-    int m_x = 0, m_y = 0;
-    std::shared_ptr<player_base> m_opponent_p;
-    std::array<std::array<bool, FieldRowSize>, FieldRowSize> m_coords;
+    char m_own_cell_type;
 };
 
 }

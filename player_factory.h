@@ -21,14 +21,15 @@ class player_factory
     player_factory() = delete;
     enum { HUMAN = 1, PC_DUMB, PC_SMART };
 public:
-    static std::shared_ptr<player_base> create(int palyer_type_id) {
+    //static std::shared_ptr<player_base> create(int palyer_type_id, char cell_type) {
+    static std::unique_ptr<player_base> create(int palyer_type_id, char cell_type) {
         switch (palyer_type_id) {
         case HUMAN:
-            return std::make_shared<human_player>();
+            return std::make_unique<human_player>(cell_type);
         case PC_DUMB:
-            return std::make_shared<pc_trivial_player>();
+            return std::make_unique<pc_trivial_player>(cell_type);
         case PC_SMART:
-            return std::make_shared<pc_smart_player>();
+            return std::make_unique<pc_smart_player>(cell_type);
         default:
             throw std::runtime_error("Invalid player id");
         }

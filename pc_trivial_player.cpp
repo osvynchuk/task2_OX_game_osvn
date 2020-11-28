@@ -10,19 +10,29 @@
 
 namespace ox_game {
 
-pc_trivial_player::pc_trivial_player() {
+pc_trivial_player::pc_trivial_player(char cell_type) : player_base(cell_type) {
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     m_gen.seed(rd()); //Standard mersenne_twister_engine seeded with rd()
 }
 
-void pc_trivial_player::do_step () {
+void pc_trivial_player::do_step (PlayArea& area) {
+    bool taken = false;
+    int x,y;
     do {
-        m_x = distrib(m_gen);
-        std::cout << "X:" << m_x << std::endl;
-        m_y = distrib(m_gen);
-        std::cout << "Y:" << m_y << std::endl;
+        x = distrib(m_gen);
+        std::cout << "X:" << x << std::endl;
+        y = distrib(m_gen);
+        std::cout << "Y:" << y << std::endl;
+
+        taken = area.is_coord_taken(x, y);
+        if (!taken) {
+            area.set_value(x, y, m_own_cell_type);
+            break;
+        } else {
+            std::cout << "This coord is incorrect or already taken. Try again." << std::endl;
+        }
     }
-    while (!set_coord(m_x, m_y));
+    while (taken);
 }
 
 }

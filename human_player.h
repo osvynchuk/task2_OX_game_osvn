@@ -11,8 +11,8 @@ namespace ox_game {
 
 class human_player : public player_base {
 public:
-    human_player() = default;
-    void do_step () override;
+    human_player(char cell_type) : player_base(cell_type) {};
+    void do_step (PlayArea& area) override;
 };
 
 }

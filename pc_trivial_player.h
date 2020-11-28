@@ -2,6 +2,7 @@
 #define PC_DUMB_PLAYER_H
 #include "player_base.h"
 #include <random>
+#include "play_area.h"
 
 //
 // CPP course, task 2 - OX game
@@ -17,12 +18,12 @@ namespace ox_game {
 
 class pc_trivial_player : public player_base {
 public:
-    pc_trivial_player();
-    void do_step () override;
+    pc_trivial_player(char cell_type);
+    void do_step (PlayArea& area) override;
 
 private:
     std::mt19937 m_gen;
-    std::uniform_int_distribution<> distrib {0,FieldRowSize-1};
+    std::uniform_int_distribution<> distrib {0, PlayArea::FieldRowSize-1};
 };
 
 }

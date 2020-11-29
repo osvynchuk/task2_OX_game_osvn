@@ -20,16 +20,12 @@ void pc_trivial_player::do_step (PlayArea& area) {
     int x,y;
     do {
         x = distrib(m_gen);
-        std::cout << "X:" << x << std::endl;
         y = distrib(m_gen);
-        std::cout << "Y:" << y << std::endl;
 
         taken = area.is_coord_taken(x, y);
         if (!taken) {
             area.set_value(x, y, m_own_cell_type);
             break;
-        } else {
-            std::cout << "This coord is incorrect or already taken. Try again." << std::endl;
         }
     }
     while (taken);
